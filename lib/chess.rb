@@ -1,1 +1,1 @@
-
+# first focus on creating the chess board and chess pieces to appear on terminal

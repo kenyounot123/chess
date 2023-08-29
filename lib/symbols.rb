@@ -1,5 +1,5 @@
 #Class for symbols, unicode
-class Symbols 
+module ChessSymbols 
   def white_king
     "\u2654"
   end
@@ -18,7 +18,6 @@ class Symbols
   def white_pawn
     "\u2659"
   end
-
   def black_king
     "\u265A"
   end
