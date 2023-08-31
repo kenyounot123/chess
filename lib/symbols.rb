@@ -1,40 +1,40 @@
 #Class for symbols, unicode
 module ChessSymbols 
   def white_king
-    "\u2654"
+    "\e[39m \u265A \e[0m"
   end
   def white_queen
-    "\u2655"
+    "\e[39m \u265B \e[0m"
   end
   def white_rook
-    "\u2656"
+    "\e[39m \u265C \e[0m"
   end
   def white_bishop 
-    "\u2657"
+    "\e[39m \u265D \e[0m"
   end
   def white_knight
-    "\u2658"
+    "\e[39m \u265E \e[0m"
   end
   def white_pawn
-    "\u2659"
+    "\e[39m \u265F \e[0m"
   end
   def black_king
-    "\u265A"
+    "\e[30m \u265A \e[0m"
   end
   def black_queen
-    "\u265B"
+    "\e[30m \u265B \e[0m"
   end
   def black_rook
-    "\u265C"
+    "\e[30m \u265C \e[0m"
   end
   def black_bishop 
-    "\u265D"
+    "\e[30m \u265D \e[0m"
   end
   def black_knight
-    "\u265E"
+    "\e[30m \u265E \e[0m"
   end
   def black_pawn
-    "\u265F"
+    "\e[30m \u265F \e[0m"
   end
   
 end
