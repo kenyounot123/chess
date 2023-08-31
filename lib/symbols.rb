@@ -1,4 +1,6 @@
-#Class for symbols, unicode
+#Class for symbols 
+  # 30; : black font
+  # 39; white font
 module ChessSymbols 
   def white_king
     "\e[39m \u265A \e[0m"
