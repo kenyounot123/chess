@@ -6,6 +6,7 @@ class King
     @move_set = []
     @color = color
     @symbol = color == 'white' ? white_king : black_king
-    
+    @symbol
+
   end
 end

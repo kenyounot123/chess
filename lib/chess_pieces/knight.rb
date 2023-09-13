@@ -9,6 +9,7 @@ class Knight
     ]
     @color = color
     @symbol = color == 'white' ? white_knight : black_knight
+    @symbol
   end
 
   def all_possible_moves(start = @location, result=[]) 

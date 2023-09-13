@@ -6,6 +6,6 @@ class Queen
     @move_set = []
     @color = color
     @symbol = color == 'white' ? white_queen : black_queen
-    
+    @symbol
   end
 end

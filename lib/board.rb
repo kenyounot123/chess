@@ -1,4 +1,4 @@
-require_relative 'symbols'
+require_relative 'chess_symbols'
 require_relative 'chess_pieces/king'
 require_relative 'chess_pieces/knight'
 require_relative 'chess_pieces/rook'
@@ -59,6 +59,7 @@ class Board
     print_chess_board
   end
 
+  #starting position of peices
   def initial_rows(color, row)
     @grid[row] = [
       Rook.new([row, 0], color).symbol,
@@ -68,16 +69,16 @@ class Board
       King.new([row, 4], color).symbol,
       Bishop.new([row, 5], color).symbol,
       Knight.new([row, 6], color).symbol,
-      Rook.new([row, 7], color).symbol
+      Rook.new([row, 7], color).symbol,
     ]
   end
-
+  #starting position of pawns
   def initial_pawn_rows(color, row)
     8.times do |index|
       @grid[row][index] = Pawn.new([row, index], color).symbol
     end
   end
-
+  #starting position of peices
   def initial_placements
     initial_rows('black', 0)
     initial_pawn_rows('black', 1)
@@ -85,6 +86,22 @@ class Board
     initial_rows('white', 7)
   end
 
+  #user picking what piece they want to move
+  def select_piece(file,rank)
+    all_files= {
+      'a' => 0,
+      'b' => 1,
+      'c' => 2,
+      'd' => 3,
+      'e' => 4,
+      'f' => 5,
+      'g' => 6,
+      'h' => 7
+    }
+    rank = (rank - 8).abs
+    puts @grid[rank][all_files[file]]
+  end
+
+
 end
 
-board = Board.new

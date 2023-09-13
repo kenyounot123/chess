@@ -6,7 +6,7 @@ class Rook
     @move_set = []
     @color = color
     @symbol = color == 'white' ? white_rook : black_rook
-    
+    @symbol
   end
 
 end

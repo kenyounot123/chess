@@ -6,6 +6,6 @@ class Bishop
     @move_set = []
     @color = color
     @symbol = color == 'white' ? white_bishop : black_bishop
-    
+    @symbol
   end
 end
