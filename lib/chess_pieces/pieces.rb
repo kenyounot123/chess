@@ -5,14 +5,14 @@ class Pieces
   def initialize(board, args)
     board.add_observer(self)
     @color = args[:color]
-    @location = [:location]
+    @location = args[:location]
     @moves = []
     @captures = []
     @moved = false
     @symbol = nil
   end
 
-  def update
+  def update(board)
     puts 'hi'
   end
 end

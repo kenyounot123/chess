@@ -5,7 +5,7 @@ class Board
   include Displayable
   include Observable
   attr_reader :black_king, :white_king, :mode
-  attr_accessor :data, :active_piece, :previous_piece
+  attr_accessor :grid, :active_piece, :previous_piece
   def initialize(grid = Array.new(8) { Array.new(8) }, params = {})
     @grid = grid
     @active_piece = params[:active_piece]
@@ -19,13 +19,13 @@ class Board
   def initial_rows(color, row)
     @grid[row] = [
       Rook.new(self, {color: color, location: [row, 0] }),
-      Knight.new(self, {color: color, location: [row, 1]}),
-      Bishop.new(self, {color: color, location: [row, 2]}),
-      Queen.new(self, {color: color, location: [row, 3]}),
-      King.new(self, {color: color, location: [row, 4]}),
-      Bishop.new(self, {color: color, location: [row, 5]}),
-      Knight.new(self, {color: color, location: [row, 6]}),
-      Rook.new(self, {color: color, location: [row, 7]}),
+      Knight.new(self, {color: color, location: [row, 1] }),
+      Bishop.new(self, {color: color, location: [row, 2] }),
+      Queen.new(self, {color: color, location: [row, 3] }),
+      King.new(self, {color: color, location: [row, 4] }),
+      Bishop.new(self, {color: color, location: [row, 5] }),
+      Knight.new(self, {color: color, location: [row, 6] }),
+      Rook.new(self, {color: color, location: [row, 7] }),
     ]
   end
   #starting position of pawns
@@ -47,6 +47,14 @@ class Board
   def update_all_moves_captures
     pieces = @grid.flatten(1).compact
     pieces.each { |piece| piece.update(self) }
+  end
+  
+  def to_s
+    print_chess_board
+  end
+  
+  def update_active_piece(coordinates)
+    @active_piece = @grid[coordinates[:row]][coordinates[:column]]
   end
 
 end
