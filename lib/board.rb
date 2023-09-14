@@ -1,107 +1,52 @@
-require_relative 'chess_symbols'
-require_relative 'chess_pieces/king'
-require_relative 'chess_pieces/knight'
-require_relative 'chess_pieces/rook'
-require_relative 'chess_pieces/queen'
-require_relative 'chess_pieces/bishop'
-require_relative 'chess_pieces/pawn'
-module Displayable
-  private
-  def print_chess_board
-    system 'clear'
-    puts "\e[32m    a  b  c  d  e  f  g  h\e[0m"
-    print_board 
-    puts "\e[32m    a  b  c  d  e  f  g  h\e[0m"
-  end
+require 'observer'
+require_relative 'displayable'
 
-  def print_board
-    @grid.each_with_index do |row, index|
-      print "\e[32m #{8 - index} \e[0m"
-      print_rows(row, index)
-      puts "\e[32m #{8 - index} \e[0m"
-    end
-  end
-
-  def print_rows(row_array, row_index)
-    row_array.each_with_index do |square, index|
-      if row_index % 2 == 0 #even index  
-        print white_background(square) if index % 2 == 0 #even squares are light
-        print black_background(square) if index % 2 == 1 # odd squares are dark 
-      elsif row_index % 2 == 1 
-        print black_background(square) if index % 2 == 0 #even squares are dark
-        print white_background(square) if index % 2 == 1 # odd squares are light
-      end
-    end
-  end
-  # 100 : dark grey 
-  # 47 : light grey
-  #if row index = odd do white square then black square
-  #if row index = even do black square then white square
-  def black_background(square)
-    "\e[100m#{square}\e[0m"
-  end
-
-  def white_background(square)
-    "\e[47m#{square}\e[0m"
-  end
-  
-end
 class Board
-  include ChessSymbols
   include Displayable
-  attr_accessor :grid
-  #somehow make the arrays contain the correct chess piece isntead of 'h'
-  #essentially, if no piece in the square, make it a empty string '     '
-  def initialize(board_state = nil)
-    @grid = Array.new(8) { Array.new(8, '   ') } 
-    #board_starting_position
-    initial_placements
-    print_chess_board
+  include Observable
+  attr_reader :black_king, :white_king, :mode
+  attr_accessor :data, :active_piece, :previous_piece
+  def initialize(grid = Array.new(8) { Array.new(8) }, params = {})
+    @grid = grid
+    @active_piece = params[:active_piece]
+    @previous_piece = params[:previous_piece]
+    @black_king = params[:black_king]
+    @white_king = params[:white_king]
+    @mode = params[:mode]
   end
 
   #starting position of peices
   def initial_rows(color, row)
     @grid[row] = [
-      Rook.new([row, 0], color).symbol,
-      Knight.new([row, 1], color).symbol,
-      Bishop.new([row, 2], color).symbol,
-      Queen.new([row, 3], color).symbol,
-      King.new([row, 4], color).symbol,
-      Bishop.new([row, 5], color).symbol,
-      Knight.new([row, 6], color).symbol,
-      Rook.new([row, 7], color).symbol,
+      Rook.new(self, {color: color, location: [row, 0] }),
+      Knight.new(self, {color: color, location: [row, 1]}),
+      Bishop.new(self, {color: color, location: [row, 2]}),
+      Queen.new(self, {color: color, location: [row, 3]}),
+      King.new(self, {color: color, location: [row, 4]}),
+      Bishop.new(self, {color: color, location: [row, 5]}),
+      Knight.new(self, {color: color, location: [row, 6]}),
+      Rook.new(self, {color: color, location: [row, 7]}),
     ]
   end
   #starting position of pawns
   def initial_pawn_rows(color, row)
     8.times do |index|
-      @grid[row][index] = Pawn.new([row, index], color).symbol
+      @grid[row][index] = Pawn.new(self, {color: color, location: [row, index]})
     end
   end
   #starting position of peices
   def initial_placements
-    initial_rows('black', 0)
-    initial_pawn_rows('black', 1)
-    initial_pawn_rows('white', 6)
-    initial_rows('white', 7)
+    initial_rows(:black, 0)
+    initial_pawn_rows(:black, 1)
+    initial_pawn_rows(:white, 6)
+    initial_rows(:white, 7)
+    @white_king = @grid[7][4]
+    @black_king = @grid[0][4]
   end
 
-  #user picking what piece they want to move
-  def select_piece(file,rank)
-    all_files= {
-      'a' => 0,
-      'b' => 1,
-      'c' => 2,
-      'd' => 3,
-      'e' => 4,
-      'f' => 5,
-      'g' => 6,
-      'h' => 7
-    }
-    rank = (rank - 8).abs
-    puts @grid[rank][all_files[file]]
+  def update_all_moves_captures
+    pieces = @grid.flatten(1).compact
+    pieces.each { |piece| piece.update(self) }
   end
-
 
 end
-

@@ -1,11 +1,8 @@
-class Pawn
-  attr_accessor :move_set, :location, :color, :symbol
+require_relative 'pieces'
+class Pawn < Pieces
   include ChessSymbols
-  def initialize(location, color, symbol = nil)
-    @location = location
-    @move_set = []
-    @color = color
-    @symbol = color == 'white' ? white_pawn : black_pawn
-    @symbol
+  def initialize(board, args)
+    super(board, args)
+    @symbol = pawn_symbol
   end
 end

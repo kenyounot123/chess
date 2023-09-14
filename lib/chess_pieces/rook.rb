@@ -1,12 +1,10 @@
-class Rook 
+require_relative 'pieces'
+class Rook < Pieces
   include ChessSymbols
-  attr_accessor :move_set, :location, :color, :symbol
-  def initialize(location, color, symbol = nil)
-    @location = location
-    @move_set = []
-    @color = color
-    @symbol = color == 'white' ? white_rook : black_rook
-    @symbol
+
+  def initialize(board,args)
+    super(board, args)
+    @symbol = rook_symbol
   end
 
 end
