@@ -14,5 +14,20 @@ class Knight < Pieces
   #   end
   #   result
   # end
+  def get_possible_moves(board)
+    possibilities = []
+    move_set.each do |move|
+      rank = @location[0] + move[0]
+      file = @location[1] + move[1]
+      possibilities << [rank,file] if valid_location?(rank,file) && board.grid[rank][file].nil?
+    end
+    possibilities
+  end
+
+  private
+
+  def move_set
+   [[1,2], [-1,2], [-1,-2], [1,-2], [-2,1], [2,1], [2,-1], [-2,-1]] 
+  end
 
 end

@@ -12,7 +12,6 @@ class Board
     @previous_piece = params[:previous_piece]
     @black_king = params[:black_king]
     @white_king = params[:white_king]
-    @mode = params[:mode]
   end
 
   #starting position of peices
@@ -42,6 +41,7 @@ class Board
     initial_rows(:white, 7)
     @white_king = @grid[7][4]
     @black_king = @grid[0][4]
+    update_all_moves_captures
   end
 
   def update_all_moves_captures
