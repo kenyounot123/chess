@@ -16,16 +16,16 @@ class Game
   def initialize(board = Board.new, current_turn = :white)
     @board = board
     @current_turn = current_turn
-    #this is for testing
-    @turn = 1
   end
 
   def switch_turn
     @current_turn = @current_turn == :white ? :black : :white
-    @turn += 1
   end
 
-  #pseudocode for now 
+
+
+
+
   def play
     set_up_board
     puts "White goes first! Enter coordinates of the piece you want to move"
@@ -36,13 +36,47 @@ class Game
     #Ask user to input coordinate of move, disable all black symbol moves
     #
     #update active piece to player inputed coordinates and show move options
-    user_input_coords = gets.chomp
-    @board.update_active_piece(translate_coordinates(user_input_coords))
-    @board.to_s
-    p @board.active_piece.get_possible_moves(@board)
-    p @board.grid[6][4]
+    select_piece_coords
+  
+
     switch_turn
   end
+
+  #Updates board to show the selected piece
+  def select_piece_coords
+    @board.update_active_piece(translate_coordinates(prompt_user_selected_piece))
+    show_move_options
+  end
+  #Checks if user input is valid when selecting piece to move
+  def valid_user_input?(input)
+    if input.length != 2 
+      false
+    else
+      coords = input.split('')
+      coords[0].between?('a','h') && coords[1].between?('1','8')
+    end
+  end
+
+  #returns validated user input
+  def prompt_user_selected_piece
+    user_input_coords = gets.chomp
+    until valid_user_input?(user_input_coords)
+      user_input_coords = gets.chomp
+    end
+    user_input_coords
+  end
+
+  def show_move_options
+    @board.active_piece.get_possible_moves(@board).each do |move|
+      @board.active_piece.moves << move 
+    end
+    @board.to_s
+  end
+
+
+
+
+
   
   def translate_coordinates(input)
     translator ||= NotationTranslator.new()
@@ -51,7 +85,6 @@ class Game
 
   #Game over condition should be checkmate or stalemate
   def game_over?
-    @turn == 10
   end
 
   def set_up_board
