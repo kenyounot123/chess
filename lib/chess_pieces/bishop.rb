@@ -6,4 +6,10 @@ class Bishop < Pieces
     super(board, args)
     @symbol = bishop_symbol
   end
+
+  private 
+
+  def move_set
+    [[1,1], [-1,1], [-1,-1], [1,-1]] 
+  end
 end

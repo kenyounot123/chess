@@ -7,7 +7,7 @@ class Knight < Pieces
   end
 
   #returns a list of possible moves when knight is selected
-  def get_possible_moves(board)
+  def find_possible_moves(board)
     possibilities = []
     move_set.each do |move|
       rank = @location[0] + move[0]

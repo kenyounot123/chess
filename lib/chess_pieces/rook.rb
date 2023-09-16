@@ -7,4 +7,9 @@ class Rook < Pieces
     @symbol = rook_symbol
   end
 
+  private 
+  def move_set
+    [[1,0], [-1,0], [0,1], [0,-1]] 
+  end
+
 end

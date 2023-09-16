@@ -27,12 +27,6 @@ class Board
       Rook.new(self, {color: color, location: [row, 7] }),
     ]
   end
-  #starting position of pawns
-  def initial_pawn_rows(color, row)
-    8.times do |index|
-      @grid[row][index] = Pawn.new(self, {color: color, location: [row, index]})
-    end
-  end
   #starting position of peices
   def initial_placements
     initial_rows(:black, 0)
@@ -43,18 +37,58 @@ class Board
     @black_king = @grid[0][4]
     update_all_moves_captures
   end
+  
+  def to_s
+    print_chess_board
+  end
+
+  
+
+  def valid_piece?(coord,color)
+    piece = @grid[coord[:row]][coord[:column]]
+    piece&.color == color 
+  end
+  
+  #Move active piece to new location, if new location has a piece then capture it and move, if not then successfully moved.
+  def update(coords)
+    row = coords[:row]
+    column = coords[:column]
+    location = @active_piece.location
+    self.delete_observer(@grid[row][column]) if @grid[row][column]
+    @grid[row][column] = @active_piece
+    @grid[location[0]][location[1]] = nil
+    @active_piece.update_location(row, column)
+    reset_board_values
+  end
+
+  def update_active_piece(coordinates)
+    @active_piece = @grid[coordinates[:row]][coordinates[:column]]
+  end
+
+  #Checks that the coordinate is one of the piece's available move
+  def valid_piece_move?(coord)
+    coordinate_to_check = [coord[:row], coord[:column]]
+    @active_piece.moves.any?(coordinate_to_check) || @active_piece.captures.any?(coordinate_to_check)
+  end
+
+  #This method is called after a piece successfully moves, resets board and notifies all of the pieces to update moves/captures
+  def reset_board_values
+    @previous_piece = @active_piece
+    @active_piece = nil
+    changed
+    notify_observers(self)
+  end
+  private 
+
+  #starting position of pawns
+  def initial_pawn_rows(color, row)
+    8.times do |index|
+      @grid[row][index] = Pawn.new(self, {color: color, location: [row, index]})
+    end
+  end
 
   def update_all_moves_captures
     pieces = @grid.flatten(1).compact
     pieces.each { |piece| piece.update(self) }
   end
-  
-  def to_s
-    print_chess_board
-  end
-  
-  def update_active_piece(coordinates)
-    @active_piece = @grid[coordinates[:row]][coordinates[:column]]
-  end
-
 end

@@ -54,7 +54,7 @@ module Displayable
 
   # 97 = white font color for chess pieces
   # 30 = black font color for chess pieces
-  # 41 = red font color for possible moves
+  # 91 = red font color for possible moves
   # 90 = dark grey font color
   #determines font color based on certain conditions
   def print_square(row_index, column_index, square, background)
@@ -62,7 +62,7 @@ module Displayable
       text_color = square.color == :white ? 97 : 30
       finish_square(text_color, background, square.symbol)
     elsif @active_piece&.moves&.any?([row_index, column_index])
-      finish_square(41, background, " \u25CF ")
+      finish_square(91, background, " \u25CF ")
     else
       finish_square(90, background, '   ')
     end

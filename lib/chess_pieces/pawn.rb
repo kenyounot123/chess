@@ -5,4 +5,10 @@ class Pawn < Pieces
     super(board, args)
     @symbol = pawn_symbol
   end
+
+
+  private
+  def move_set
+    [[0,1], [0,2]] 
+  end
 end
