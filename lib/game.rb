@@ -120,8 +120,8 @@ class Game
     @board.active_piece.find_possible_moves(@board).each do |move|
       @board.active_piece.moves << move 
     end
-    p @board.active_piece.moves
     @board.to_s
+    p @board.active_piece.captures
   end
 
   def user_input(prompt)
