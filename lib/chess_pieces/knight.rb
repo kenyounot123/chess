@@ -17,6 +17,16 @@ class Knight < Pieces
     possibilities
   end
 
+  def find_possible_captures(board)
+    possibilities = []
+    move_set.each do |move|
+      rank = @location[0] + move[0]
+      file = @location[1] + move[1]
+      possibilities << [rank,file] if opposing_piece?(board.grid, rank, file)
+    end
+    possibilities
+  end
+
   private
 
   def move_set

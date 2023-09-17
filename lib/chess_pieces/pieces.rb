@@ -87,7 +87,7 @@ class Pieces
     return unless valid_location?(row, column)
 
     piece = board[row][column]
-    piece && piece&.color != color
+    piece && piece.color != color
   end
 
 
