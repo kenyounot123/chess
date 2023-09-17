@@ -6,7 +6,7 @@ class Knight < Pieces
     @symbol = knight_symbol
   end
 
-  #returns a list of possible moves when knight is selected
+  #returns a list of possible moves
   def find_possible_moves(board)
     possibilities = []
     move_set.each do |move|
@@ -17,6 +17,7 @@ class Knight < Pieces
     possibilities
   end
 
+  #returns a list of possible captures
   def find_possible_captures(board)
     possibilities = []
     move_set.each do |move|

@@ -65,7 +65,8 @@ class Game
     validate_piece_coordinates(coords)
     @board.update_active_piece(coords)
     validate_active_piece(@board.active_piece)
-    show_moves_option
+    @board.to_s
+    p @board.active_piece
   rescue StandardError => e
     puts e.message
     retry
@@ -93,8 +94,13 @@ class Game
   def validate_piece_coordinates(coords)
     raise CoordinateError unless @board.valid_piece?(coords, @current_turn)
   end
+  #Checks if piece has availalbe moves
   def validate_active_piece(piece)
     raise PieceError unless piece.moves.size >= 1 
+  end
+  #Makes sure that the move is part of piece's moveset
+  def validate_move(coords)
+    raise MoveError unless @board.valid_piece_move?(coords)
   end
 
   #Validates user selected piece
@@ -110,18 +116,11 @@ class Game
     input
   end
 
-  #Makes sure that the moove is part of piece's moveset
-  def validate_move(coords)
-    raise MoveError unless @board.valid_piece_move?(coords)
-  end
+
 
   #Displays available moves for active piece
   def show_moves_option
-    @board.active_piece.find_possible_moves(@board).each do |move|
-      @board.active_piece.moves << move 
-    end
     @board.to_s
-    p @board.active_piece.captures
   end
 
   def user_input(prompt)
