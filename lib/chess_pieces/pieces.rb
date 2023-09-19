@@ -34,7 +34,8 @@ class Pieces
   end
   def update_new_moves(board)
     possible_moves = find_possible_moves(board)
-    @moves = possible_moves
+    new_moves = remove_illegal_moves(possible_moves, board)
+    @moves = new_moves
   end
   def find_possible_moves(board, result=[])
     move_set.each do |move|
@@ -51,9 +52,14 @@ class Pieces
   end
 
   # #Add serialization in this method
-  # def remove_illegal_moves(board, moves)
-  #   return moves unless moves.size > 0 
-    
+  #  Marshall.load(Marshall.dump(board)) creates a deep copy 
+  #returns a set of moves after reviewing the moves to see if they are actually viable.
+  def remove_illegal_moves(moves, board)
+    return moves unless moves.size > 0 
+    temp_board = Marshall.load(Marshall.dump(board))
+
+    moves
+  end
   # end
 
   private

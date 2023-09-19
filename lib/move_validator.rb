@@ -1,0 +1,1 @@
+#Contains logic to validate moves given a deep copy of the board by testing multiple scenarios

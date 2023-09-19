@@ -12,6 +12,7 @@ class Board
     @previous_piece = params[:previous_piece]
     @black_king = params[:black_king]
     @white_king = params[:white_king]
+    @check = false
   end
 
   #starting position of peices
@@ -78,6 +79,14 @@ class Board
     changed
     notify_observers(self)
   end
+  def king_in_check?(color_turn)
+    current_king = color_turn == :white ? @white_king : @black_king
+    pieces = @grid.flatten(1).compact
+    pieces.any? do |piece|
+      next unless piece.color != current_king.color
+      piece.captures.include?(current_king.location)
+    end
+  end
   private 
 
   #starting position of pawns
@@ -91,4 +100,6 @@ class Board
     pieces = @grid.flatten(1).compact
     pieces.each { |piece| piece.update(self) }
   end
+
+  #Returns true if opposite king's location is in one of the piece's capture list
 end

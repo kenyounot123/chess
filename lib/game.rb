@@ -10,6 +10,7 @@ require_relative 'chess_pieces/queen'
 require_relative 'chess_pieces/king'
 require_relative 'chess_pieces/pawn'
 require_relative 'notation_translator'
+require_relative 'database'
 
 class Game
 
@@ -60,6 +61,7 @@ class Game
 
 
   def select_piece_coords
+    puts "WARNING! King in check" if @board.king_in_check?(@current_turn)
     input = user_select_piece
     coords = translate_coordinates(input)
     validate_piece_coordinates(coords)
@@ -96,7 +98,7 @@ class Game
   end
   #Checks if piece has availalbe moves
   def validate_active_piece(piece)
-    raise PieceError unless piece.moves.size >= 1 
+    raise PieceError unless piece.moves.size >= 1 || piece.captures.size >= 1
   end
   #Makes sure that the move is part of piece's moveset
   def validate_move(coords)
