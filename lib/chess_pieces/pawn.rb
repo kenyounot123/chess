@@ -11,8 +11,19 @@ class Pawn < Pieces
   end
   
   def find_possible_moves(board)
-    [one_square_move(board), two_square_move(board)]
+    [one_square_move(board), two_square_move(board)].compact
   end
+
+  def find_possible_captures(board)
+    possible_captures = []
+    file = @location[1]
+    right_diagonal = basic_capture_move(board.grid, file + 1)
+    left_diagonal = basic_capture_move(board.grid, file - 1)
+    possible_captures << right_diagonal << left_diagonal
+    possible_captures.compact.flatten(1)
+  end
+
+  private 
 
   def one_square_move(board)
     move = [@location[0] + rank_direction, @location[1]]
@@ -29,22 +40,12 @@ class Pawn < Pieces
     return [rank, file] if opposing_piece?(board,rank,file)
   end
 
-  def find_possible_captures(board)
-    possible_captures = []
-    file = @location[1]
-    right_diagonal = basic_capture_move(board.grid, file + 1)
-    left_diagonal = basic_capture_move(board.grid, file - 1)
-    possible_captures << right_diagonal << left_diagonal
-    possible_captures.compact
-  end
-
   #Returns true if it is the pawn's first move 
   def not_first_move?(board,move)
     @moved || board.grid[move[0]][move[1]]
   end
 
 
-  private
   def move_set
   end
 end
