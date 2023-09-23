@@ -68,6 +68,8 @@ class Game
     @board.update_active_piece(coords)
     validate_active_piece(@board.active_piece)
     @board.to_s
+    p @board.active_piece.moves
+    p @board.active_piece.captures
   rescue StandardError => e
     puts e.message
     retry

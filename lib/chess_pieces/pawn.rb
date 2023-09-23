@@ -20,7 +20,7 @@ class Pawn < Pieces
     right_diagonal = basic_capture_move(board.grid, file + 1)
     left_diagonal = basic_capture_move(board.grid, file - 1)
     possible_captures << right_diagonal << left_diagonal
-    possible_captures.compact.flatten(1)
+    possible_captures.compact
   end
 
   private 
@@ -46,6 +46,5 @@ class Pawn < Pieces
   end
 
 
-  def move_set
-  end
+  def move_set ;end
 end

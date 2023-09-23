@@ -11,9 +11,7 @@ class MoveValidator
 
   def validate_moves
     @king_location = find_king_location
-    p @location
     @board.grid[@location[0]][@location[1]] = nil
-    p @moves_list
     @moves_list.select do |move|
       legal_move?(move)
     end
@@ -47,7 +45,7 @@ class MoveValidator
   end
 
   def find_king_location
-    return if @current_piece == king_symbol
+    return if @current_piece.symbol == king_symbol
     if @current_piece.color == :black 
       @board.black_king.location
     else

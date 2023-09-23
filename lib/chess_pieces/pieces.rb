@@ -31,11 +31,12 @@ class Pieces
   def update_new_captures(board)
     possible_captures = find_possible_captures(board)
     @captures = remove_illegal_moves(possible_captures, board)
+    
   end
 
   def update_new_moves(board)
     possible_moves = find_possible_moves(board)
-    new_moves = remove_illegal_moves(possible_moves, board)###
+    new_moves = remove_illegal_moves(possible_moves, board)
     @moves = new_moves
   end
   def find_possible_moves(board, result=[])
@@ -62,6 +63,12 @@ class Pieces
     validator.validate_moves
   end
   # end
+  def opposing_piece?(board, row, column)
+    return unless valid_location?(row, column)
+
+    piece = board[row][column]
+    piece && piece.color != color
+  end
 
   private
   #creates captures when it reaches a piece
@@ -88,13 +95,6 @@ class Pieces
       file += file_change
     end
     all_possibile_moves
-  end
-
-  def opposing_piece?(board, row, column)
-    return unless valid_location?(row, column)
-
-    piece = board[row][column]
-    piece && piece.color != color
   end
 
 
