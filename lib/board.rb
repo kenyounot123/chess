@@ -2,7 +2,7 @@ require 'observer'
 require_relative 'displayable'
 
 class Board
-  include Displayable
+  include Displayable 
   include Observable
   attr_reader :black_king, :white_king, :mode
   attr_accessor :grid, :active_piece, :previous_piece
@@ -56,6 +56,14 @@ class Board
     movement = MovementFactory.new(type).build
     movement.update_pieces(self, coords)
     reset_board_values
+    # row = coords[:row]
+    # column = coords[:column]
+    # location = @active_piece.location
+    # self.delete_observer(@grid[row][column]) if @grid[row][column]
+    # @grid[row][column] = @active_piece
+    # @grid[location[0]][location[1]] = nil
+    # @active_piece.update_location(row, column)
+    # reset_board_values
   end
 
   def movement_type(coords)
@@ -106,7 +114,7 @@ class Board
 
   #Checks to see if previous and current turn was a pawn piece movement 
   def two_pawns?
-    @previous_piece.symbol == pawn_symbol && @active_piece.symbol == pawn_symbol
+    @previous_piece.symbol == " \u265F " && @active_piece.symbol == " \u265F "
   end
 
   #starting position of pawns
