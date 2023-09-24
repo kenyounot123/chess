@@ -11,6 +11,9 @@ require_relative 'chess_pieces/king'
 require_relative 'chess_pieces/pawn'
 require_relative 'notation_translator'
 require_relative 'database'
+require_relative 'movement/movement_factory'
+require_relative 'movement/basic_movement'
+require_relative 'movement/en_passant_movement'
 
 class Game
 

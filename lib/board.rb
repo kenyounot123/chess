@@ -52,15 +52,20 @@ class Board
   
   #Move active piece to new location, if new location has a piece then capture it and move, if not then successfully moved.
   def update(coords)
-    row = coords[:row]
-    column = coords[:column]
-    location = @active_piece.location
-    self.delete_observer(@grid[row][column]) if @grid[row][column]
-    @grid[row][column] = @active_piece
-    @grid[location[0]][location[1]] = nil
-    @active_piece.update_location(row, column)
+    type = movement_type(coords)
+    movement = MovementFactory.new(type).build
+    movement.update_pieces(self, coords)
     reset_board_values
   end
+
+  def movement_type(coords)
+    if en_passant_capture?(coords)
+      'EnPassant'
+    else
+      'Basic'
+    end
+  end
+
 
   def update_active_piece(coordinates)
     @active_piece = @grid[coordinates[:row]][coordinates[:column]]
@@ -79,6 +84,7 @@ class Board
     changed
     notify_observers(self)
   end
+
   def king_in_check?(color_turn)
     current_king = color_turn == :white ? @white_king : @black_king
     pieces = @grid.flatten(1).compact
@@ -88,6 +94,20 @@ class Board
     end
   end
   private 
+
+  def en_passant_capture?(coords)
+    @previous_piece&.location == [coords[:row], coords[:column]] && en_passant_pawn?
+  end
+
+  #Returns true if all conditions of enpassant are satisfied
+  def en_passant_pawn?
+    two_pawns? && @active_piece.en_passant_rank? && @previous_piece.en_passant
+  end
+
+  #Checks to see if previous and current turn was a pawn piece movement 
+  def two_pawns?
+    @previous_piece.symbol == pawn_symbol && @active_piece.symbol == pawn_symbol
+  end
 
   #starting position of pawns
   def initial_pawn_rows(color, row)
