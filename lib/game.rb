@@ -1,22 +1,8 @@
 #Contains script to play the chess game
-require_relative 'board'
-require_relative 'displayable'
-require_relative 'chess_symbols'
-require_relative 'chess_pieces/pieces'
-require_relative 'chess_pieces/rook'
-require_relative 'chess_pieces/knight'
-require_relative 'chess_pieces/bishop'
-require_relative 'chess_pieces/queen'
-require_relative 'chess_pieces/king'
-require_relative 'chess_pieces/pawn'
-require_relative 'notation_translator'
+require_relative 'game_prompts'
 require_relative 'database'
-require_relative 'movement/movement_factory'
-require_relative 'movement/basic_movement'
-require_relative 'movement/en_passant_movement'
-
 class Game
-
+  
   class InputError < StandardError
     def message
       "Invalid input! Enter column and row"
@@ -39,6 +25,9 @@ class Game
     end 
   end
 
+  include GamePrompts
+  include Database
+
   def initialize(board = Board.new, current_turn = :white)
     @board = board
     @current_turn = current_turn
@@ -49,9 +38,9 @@ class Game
   end
 
   def play
-    set_up_board
+    @board.to_s
     player_turn until @board.game_over?
-    puts "Congratulations, #{@current_turn} wins"
+    game_over_message
   end
 
   def player_turn
@@ -65,8 +54,8 @@ class Game
 
 
   def select_piece_coords
-    puts "WARNING! King in check" if @board.king_in_check?(@current_turn)
     input = user_select_piece
+    return if input == "Q"
     coords = translate_coordinates(input)
     validate_piece_coordinates(coords)
     @board.update_active_piece(coords)
@@ -110,23 +99,23 @@ class Game
 
   #Validates user selected piece
   def user_select_piece
-    input = user_input("Enter coordinate of piece you want to move, example: d3")
+    king_check_warning if @board.king_in_check?(@current_turn)
+    input = user_input(user_piece_selection)
     validate_piece_input(input)
+    if input.upcase == 'Q'
+      resign_game 
+      exit
+    end
+    save_game if input.upcase == 'S'
     input
   end
   #Validates user selected move, makes sure it is a valid input: example, d3
   def user_select_move
-    input = user_input("Enter coordinate of where you want this piece to move")
+    input = user_input(user_move_selection)
     validate_move_coordinates(input)
     input
   end
 
-
-
-  #Displays available moves for active piece
-  def show_moves_option
-    @board.to_s
-  end
 
   def user_input(prompt)
     puts prompt
@@ -143,10 +132,7 @@ class Game
 
   def set_up_board
     @board.initial_placements
-    @board.to_s
   end
 
 end
 
-game = Game.new
-game.play
