@@ -25,7 +25,11 @@ class EnPassantMovement < BasicMovement
   end
 
   def update_active_pawn_coordinates
-    @board.active_piece[new_rank][column] = @board.active_piece
+    @board.grid[new_rank][column] = @board.active_piece
+  end
+
+  def update_active_piece_location
+    @board.active_piece.update_location(new_rank, column)
   end
 
   private

@@ -43,7 +43,6 @@ class Board
     print_chess_board
   end
 
-  
 
   def valid_piece?(coord,color)
     piece = @grid[coord[:row]][coord[:column]]
@@ -93,6 +92,7 @@ class Board
     notify_observers(self)
   end
 
+  #Returns true if opposite king's location is in one of the piece's capture list
   def king_in_check?(color_turn)
     current_king = color_turn == :white ? @white_king : @black_king
     pieces = @grid.flatten(1).compact
@@ -101,6 +101,19 @@ class Board
       piece.captures.include?(current_king.location)
     end
   end
+
+  #Returns true if a color has no available moves after previous piece has moved
+  #resulting in checkmate/game over.
+  def game_over?
+    return false unless @previous_piece
+
+    color_to_check = @previous_piece.color == :white ? :black : :white
+    no_more_moves_captures?(color_to_check)
+  end
+
+  
+
+
   private 
 
   def en_passant_capture?(coords)
@@ -124,10 +137,19 @@ class Board
     end
   end
 
+  #Checks if each piece of desired color has any available moves or captures
+  #Returns true if no avaialble moves or captures
+  def no_more_moves_captures?(color)
+    pieces = @grid.flatten.compact
+    pieces.none? do |piece|
+      next unless piece.color == color
+      piece.moves.size.positive? || piece.captures.size.positive?
+    end
+  end
+
   def update_all_moves_captures
     pieces = @grid.flatten(1).compact
     pieces.each { |piece| piece.update(self) }
   end
 
-  #Returns true if opposite king's location is in one of the piece's capture list
 end

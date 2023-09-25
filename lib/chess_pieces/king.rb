@@ -26,10 +26,7 @@ class King < Pieces
     end
     captures.compact
   end
-
-  def directional_moves(board)
-  end
-
+  
   private
   def move_set 
     [[1,0], [-1,0], [0,1], [0,-1], [1,1], [1,-1], [-1,1], [-1,-1]] 

@@ -50,7 +50,8 @@ class Game
 
   def play
     set_up_board
-    player_turn until game_over?
+    player_turn until @board.game_over?
+    puts "Congratulations, #{@current_turn} wins"
   end
 
   def player_turn
@@ -71,8 +72,6 @@ class Game
     @board.update_active_piece(coords)
     validate_active_piece(@board.active_piece)
     @board.to_s
-    p @board.active_piece.moves
-    p @board.active_piece.captures
   rescue StandardError => e
     puts e.message
     retry
@@ -140,9 +139,7 @@ class Game
     translator.translate_notation(input)
   end
 
-  #Game over condition should be checkmate or stalemate
-  def game_over?
-  end
+  
 
   def set_up_board
     @board.initial_placements
