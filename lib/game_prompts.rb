@@ -13,6 +13,7 @@ module GamePrompts
   end
 
   def game_over_message
+    return unless @play_counter.positive?
     if @board.king_in_check?(@current_turn)
       puts "#{@previous_color} wins! #{current_turn} king is in checkmate"
     else
@@ -25,7 +26,7 @@ module GamePrompts
     puts play_again_message
     input = gets.chomp
     choice = input.upcase == 'Q' ? :quit : :repeat
-    return choice unless input.match?(/^[QP]$/i)
+    return choice if input.match?(/^[QP]$/i)
     repeat_game
   end
   def user_piece_selection
@@ -82,6 +83,7 @@ module GamePrompts
 
   def resign_game
     puts "\e[36m#{previous_color}\e[0m wins because #{@current_turn} resigned!"
+    @play_counter = 0
   end
 
 

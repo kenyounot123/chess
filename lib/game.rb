@@ -31,6 +31,7 @@ class Game
   def initialize(board = Board.new, current_turn = :white)
     @board = board
     @current_turn = current_turn
+    @play_counter = 1
   end
 
   def switch_turn
@@ -39,13 +40,15 @@ class Game
 
   def play
     @board.to_s
-    player_turn until @board.game_over?
+    player_turn until @board.game_over? || @play_counter.zero?
     game_over_message
   end
 
   def player_turn
     puts "It is now #{@current_turn}'s turn"
     select_piece_coords
+    return if @play_counter.zero?
+
     move = select_move_coords
     @board.update(move)
     @board.to_s
@@ -55,7 +58,8 @@ class Game
 
   def select_piece_coords
     input = user_select_piece
-    return if input == "Q"
+    return if @play_counter.zero?
+
     coords = translate_coordinates(input)
     validate_piece_coordinates(coords)
     @board.update_active_piece(coords)
@@ -102,10 +106,7 @@ class Game
     king_check_warning if @board.king_in_check?(@current_turn)
     input = user_input(user_piece_selection)
     validate_piece_input(input)
-    if input.upcase == 'Q'
-      resign_game 
-      exit
-    end
+    resign_game if input.upcase == 'Q'
     save_game if input.upcase == 'S'
     input
   end
