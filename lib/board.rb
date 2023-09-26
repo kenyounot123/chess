@@ -55,19 +55,13 @@ class Board
     movement = MovementFactory.new(type).build
     movement.update_pieces(self, coords)
     reset_board_values
-    # row = coords[:row]
-    # column = coords[:column]
-    # location = @active_piece.location
-    # self.delete_observer(@grid[row][column]) if @grid[row][column]
-    # @grid[row][column] = @active_piece
-    # @grid[location[0]][location[1]] = nil
-    # @active_piece.update_location(row, column)
-    # reset_board_values
   end
 
   def movement_type(coords)
     if en_passant_capture?(coords)
       'EnPassant'
+    elsif pawn_promotion_movement?(coords)
+      'PawnPromotion'
     else
       'Basic'
     end
@@ -115,6 +109,15 @@ class Board
 
 
   private 
+
+  def pawn_promotion_movement?(coords)
+    @active_piece.symbol == " \u265F " && pawn_promotion_rank?(coords[:row])
+  end
+
+  def pawn_promotion_rank?(row)
+    pawn_color = @active_piece.color
+    (pawn_color == :white && row.zero?) || (pawn_color == :black && row == 7)
+  end
 
   def en_passant_capture?(coords)
     @previous_piece&.location == [coords[:row], coords[:column]] && en_passant_pawn?
