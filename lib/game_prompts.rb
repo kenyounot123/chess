@@ -9,7 +9,7 @@ module GamePrompts
   end
 
   def king_check_warning
-    puts "WARNING!!!! Your king is currently in check!"
+    "WARNING!!!! Your king is currently in check!"
   end
 
   def game_over_message
@@ -43,6 +43,23 @@ module GamePrompts
 
     Enter coordinates of legal move or capture for this piece
     
+
+    HEREDOC
+  end
+  def en_passant_warning
+    <<~HEREDOC
+
+    One of these moves is to capture the opposing pawn that just moved.
+
+    As part of en passant, this pawn will move to the square in front of the captured pawn. 
+
+    HEREDOC
+  end
+
+  def castle_warning
+    <<~HEREDOC
+
+    One of these moves will castle with the rook
 
     HEREDOC
   end

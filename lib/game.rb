@@ -65,6 +65,7 @@ class Game
     @board.update_active_piece(coords)
     validate_active_piece(@board.active_piece)
     @board.to_s
+    p @board.active_piece.moves
   rescue StandardError => e
     puts e.message
     retry
@@ -103,7 +104,7 @@ class Game
 
   #Validates user selected piece
   def user_select_piece
-    king_check_warning if @board.king_in_check?(@current_turn)
+    puts king_check_warning if @board.king_in_check?(@current_turn)
     input = user_input(user_piece_selection)
     validate_piece_input(input)
     resign_game if input.upcase == 'Q'
@@ -112,6 +113,8 @@ class Game
   end
   #Validates user selected move, makes sure it is a valid input: example, d3
   def user_select_move
+    puts en_passant_warning if @board.possible_en_passant?
+    puts castle_warning if @board.possible_castle?
     input = user_input(user_move_selection)
     validate_move_coordinates(input)
     input

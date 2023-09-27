@@ -62,6 +62,8 @@ class Board
       'EnPassant'
     elsif pawn_promotion_movement?(coords)
       'PawnPromotion'
+    elsif castling?(coords)
+      'Castle'
     else
       'Basic'
     end
@@ -86,7 +88,7 @@ class Board
     notify_observers(self)
   end
 
-  #Returns true if opposite king's location is in one of the piece's capture list
+  #Returns true if current turn king's location is in one of the opposing piece's capture list
   def king_in_check?(color_turn)
     current_king = color_turn == :white ? @white_king : @black_king
     pieces = @grid.flatten(1).compact
@@ -105,6 +107,13 @@ class Board
     no_more_moves_captures?(color_to_check)
   end
 
+  def possible_en_passant?
+    @active_piece&.captures&.include?(@previous_piece&.location) && en_passant_pawn?
+  end
+
+  def possible_castle?
+    @active_piece.symbol == " \u265A " && castle_moves?
+  end
   
 
 
@@ -117,6 +126,23 @@ class Board
   def pawn_promotion_rank?(row)
     pawn_color = @active_piece.color
     (pawn_color == :white && row.zero?) || (pawn_color == :black && row == 7)
+  end
+
+  def castling?(coords)
+    file_difference = (coords[:column] - @active_piece.location[1]).abs
+    @active_piece.symbol == " \u265A " && file_difference == 2
+    
+  end
+  
+
+  #Returns true if conditions of castling are met
+  def castle_moves?
+    location = @active_piece.location
+    rank = location[0]
+    file = location[1]
+    king_side = [rank, file + 2]
+    queen_side = [rank, file - 2]
+    @active_piece&.moves&.include?(king_side) || @active_piece&.moves&.include?(queen_side)
   end
 
   def en_passant_capture?(coords)
