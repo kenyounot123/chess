@@ -96,6 +96,9 @@ class Pawn < Pieces
 
   #Returns true if it is the pawn's first move 
   def not_first_move?(board,move)
+    first_square = one_square_move(board)
+    return true unless first_square 
+    
     @moved || board.grid[move[0]][move[1]]
   end
 

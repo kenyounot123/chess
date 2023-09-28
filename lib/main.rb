@@ -14,6 +14,7 @@ require_relative 'movement/movement_factory'
 require_relative 'movement/basic_movement'
 require_relative 'movement/pawn_promotion_movement'
 require_relative 'movement/en_passant_movement'
+require_relative 'movement/castling_movement'
 require_relative 'game_prompts'
 require_relative 'game'
 

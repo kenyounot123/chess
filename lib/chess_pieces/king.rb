@@ -64,7 +64,7 @@ class King < Pieces
 
   #Returns true if other pieces do not put king in check at specific location
   def safe_passage?(board, location)
-    pieces = board.flatten(1).compact
+    pieces = board.grid.flatten(1).compact
     pieces.none? do |piece|
       next unless piece.color != color && piece.symbol != symbol
 
@@ -77,7 +77,7 @@ class King < Pieces
     piece = board.grid[location[0]][file]
     return false unless piece
 
-    moved == false && piece.symbol == king_symbol && piece.moved == false
+    moved == false && piece.symbol == rook_symbol && piece.moved == false
   end
 
   def empty_files?(board, files)
