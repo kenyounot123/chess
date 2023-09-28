@@ -1,4 +1,5 @@
 # Command Line Interface Ruby Chess game
+![RubyChess](https://github.com/kenyounot123/chess/assets/70028795/a55c0807-2eaa-499b-9be0-325cc7975b5b)
 * This is a Player vs Player chess game played on the terminal
 * Player first selects a chess piece and then selects the coordinate that they want \
 to move to
@@ -15,4 +16,4 @@ to move to
 * Tests using Rspec 
 ## Revisiting this project in the future
 * I would definitely use Rspec to test certain methods 
-
+To play game click this [link](https://replit.com/@kenlu6/chess)
