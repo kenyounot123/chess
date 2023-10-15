@@ -1,9 +1,9 @@
 # Command Line Interface Ruby Chess game
+![RubyChess](https://github.com/kenyounot123/chess/assets/70028795/a55c0807-2eaa-499b-9be0-325cc7975b5b)
 * This is a Player vs Player chess game played on the terminal
 * Player first selects a chess piece and then selects the coordinate that they want \
 to move to
 ## Things I learned / Used
-* A lot of these ideas I got from ***rlmoser99***
 * Learned a lot about design patterns in object oriented programming, especially Strategy, Factory, Observer (used these three in this project)
 * **Observer** design pattern
 * Learned about Ruby Observable module and how to implement it. Ruby observable module allowed me to use the `Board` class as the subject and the `Piece` class as the observers. When an instance of `Piece` is created, it becomes the observer of the `Board` instance. So everytime a `Piece` moves, the `Board` changes and it notifies all the `Piece` observers about this change so that each `Piece` can update its new moves and captures.
@@ -15,4 +15,4 @@ to move to
 * Tests using Rspec 
 ## Revisiting this project in the future
 * I would definitely use Rspec to test certain methods 
-
+To play game click this [link](https://replit.com/@kenlu6/chess)
